@@ -37,9 +37,18 @@ conference_dict = {
     },
 }
 
+def _word_preprocess(word):
+    word = word.lower()
+    word = word.replace('models', 'model')
+    word = word.replace('embeddings', 'embedding')
+    word = word.replace('evaluate', 'evaluation')
+    word = word.replace('metrics', 'evaluation')
+    return word
+
 def text_preprocess(text):
     tokens = word_tokenize(text)
     tokens = list(filter(lambda x: x.lower() not in stopWords, tokens))
-    tokens = [token.lower() for token in tokens if token.isalnum()]
+    tokens = [_word_preprocess(token) for token in tokens if token.isalnum()]
+    tokens = [token for token in tokens if token != 'model']
     counter = Counter(tokens)
     return counter
